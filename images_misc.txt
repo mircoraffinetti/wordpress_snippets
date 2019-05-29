@@ -1,0 +1,2 @@
+// SVG Enconding error: add into SVG file as first code:
+<?xml version="1.0" encoding="utf-8"?>
