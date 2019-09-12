@@ -1,0 +1,53 @@
+/**** get subpages (only query) ****/
+<?php
+  $args = array(
+      'post_type'      => 'page',
+      'posts_per_page' => -1,
+      'post_parent'    => get_the_ID(),
+      'orderby'        => 'menu_order title',
+      'order'          => 'asc',
+  );
+  $parent = new WP_Query( $args );
+  if ( $parent->have_posts() ) : ?>
+          <?php while ( $parent->have_posts() ) : $parent->the_post(); ?>
+              <?php the_title(); ?>
+          <?php endwhile; ?>
+  <?php endif; 
+  wp_reset_postdata(); 
+?>
+
+/**** get subpages with cart ****/
+
+<div class="container container-main">
+        <div class="row">
+            <?php
+            $args = array(
+                'post_type'      => 'page',
+                'posts_per_page' => -1,
+                'post_parent'    => get_the_ID(),
+                'orderby'        => 'menu_order title',
+                'order'          => 'asc',
+            );
+            $parent = new WP_Query( $args );
+            if ( $parent->have_posts() ) : ?>
+                <div class="row">
+                    <?php while ( $parent->have_posts() ) : $parent->the_post(); ?>
+                        <div class="col-md-4 subpages__item">
+                            <a href="<?php the_permalink(); ?>">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        <div class="d-flex">
+                                            <div class="mr-auto p-2"><h2 class="card-title"><?php the_title(); ?></h2></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body align-self-center">
+                                        <?php the_post_thumbnail(); ?>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    <?php endwhile; ?>
+                </div>
+            <?php endif; wp_reset_postdata(); ?>
+        </div><!-- /.row -->
+    </div><!-- /.container -->
