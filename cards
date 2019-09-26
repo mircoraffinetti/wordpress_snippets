@@ -1,0 +1,11 @@
+/*** CARDS SAME HEIGHT ***/
+ <div class="card h-100">
+      <div class="cart-header"><a href="<?php the_permalink(); ?>"><?php the_post_thumbnail(); ?></a></div>
+      <div class="card-body">
+          <div class="text-muted">
+              <div><time datetime="<?php the_time('d-m-Y') ?>"><i class="far fa-calendar"></i>&nbsp; <?php the_time('j F Y') ?></time></div>
+              <div><i class="far fa-folder"></i> <?php the_category(' ') ?></div>
+          </div>
+          <a href="<?php the_permalink(); ?>"><h3><?php the_title(); ?></h3></a>
+      </div>
+  </div>
