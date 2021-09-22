@@ -1,5 +1,24 @@
+/*************************** only admin can moderate comments **************************************/
 
-/*******  Hide comment editing options on the back-end ********/
+function restrict_comment_editing( $caps, $cap, $user_id, $args ) {
+    if ( 'edit_comment' == $cap ) {
+        // Allowed roles
+        $allowed_roles = ['editor', 'administrator','master-editor'];
+
+        // Checks for multiple users roles
+        $user = wp_get_current_user();
+        $is_allowed = array_diff($allowed_roles, (array)$user->roles);
+
+        // Remove editing capabilities on the back-end if the role isn't allowed
+        if(count($allowed_roles) == count($is_allowed))
+            $caps[] = 'moderate_comments';
+    }
+
+    return $caps;
+}
+add_filter( 'map_meta_cap', 'restrict_comment_editing', 10, 4 );
+
+
 add_action('init', function() {
     // Allowed roles
     $allowed_roles = ['editor', 'administrator','master-editor'];
