@@ -1,0 +1,47 @@
+
+/*******  Hide comment editing options on the back-end ********/
+add_action('init', function() {
+    // Allowed roles
+    $allowed_roles = ['editor', 'administrator','master-editor'];
+
+    // Checks for multiple users roles
+    $user = wp_get_current_user();
+    $is_allowed = array_diff($allowed_roles, (array)$user->roles);
+
+    global $wp_roles;
+    $allowed_roles = ['editor', 'administrator'];
+    foreach (array_keys($wp_roles->roles) as $role){
+        if (!in_array($role, $allowed_roles)) {
+            $wp_roles->remove_cap( $role, 'moderate_comments' );
+        }
+    }
+
+    $user = wp_get_current_user();
+    if ( in_array( 'master-editor', (array) $user->roles ) ) {
+    if(count($allowed_roles) == count($is_allowed)) {
+        add_filter('bulk_actions-edit-comments', 'remove_bulk_comments_actions');
+        add_filter('comment_row_actions', 'remove_comment_row_actions');
+    }
+});
+
+function remove_bulk_comments_actions($actions) {
+//    unset($actions['unapprove']);
+//    unset($actions['approve']);
+//    unset($actions['spam']);
+//    unset($actions['trash']);
+    unset($actions['edit']);
+    unset($actions['quickedit']);
+
+    return $actions;
+}
+
+function remove_comment_row_actions($actions) {
+//    unset($actions['approve']);
+//    unset($actions['unapprove']);
+    unset($actions['quickedit']);
+    unset($actions['edit']);
+//    unset($actions['spam']);
+//    unset($actions['trash']);
+
+    return $actions;
+}
